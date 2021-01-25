@@ -1,0 +1,37 @@
+version: "2.1"
+services:
+  swag:
+    image: ghcr.io/linuxserver/swag
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    networks:
+      - lsio
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+      - URL=garou.hopto.org
+      - SUBDOMAINS=
+#      - SUBDOMAINS=www,wiki,music,audiobooks
+      - VALIDATION=http
+#      - CERTPROVIDER= #optional
+#      - DNSPLUGIN=cloudflare #optional
+#      - PROPAGATION= #optional
+#      - DUCKDNSTOKEN= #optional
+#      - EMAIL= #optional
+#      - ONLY_SUBDOMAINS=false #optional
+#      - EXTRA_DOMAINS= #optional
+#      - STAGING=false #optional
+#      - MAXMINDDB_LICENSE_KEY= #optional
+    volumes:
+      - /srv/priv/services/swag/config:/config
+    ports:
+      - 443:443
+      - 80:80 #optional
+    restart: unless-stopped
+
+networks:
+  lsio:
+    driver: bridge
+    external: true
