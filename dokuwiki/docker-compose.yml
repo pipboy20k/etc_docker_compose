@@ -1,0 +1,22 @@
+version: "2.1"
+services:
+  dokuwiki:
+    image: ghcr.io/linuxserver/dokuwiki
+    container_name: dokuwiki
+    networks:
+      - lsio
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - /srv/priv/services/dokuwiki/config:/config
+    ports:
+      - 4050:80
+      #- 443:443 #optional
+    restart: unless-stopped
+
+networks:
+  lsio:
+    driver: bridge
+    external: true
