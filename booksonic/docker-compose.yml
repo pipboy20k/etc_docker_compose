@@ -1,0 +1,26 @@
+version: "2.1"
+services:
+  booksonic-air:
+    image: ghcr.io/linuxserver/booksonic-air
+    container_name: booksonic-air
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+        #- CONTEXT_PATH=garou.hopto.org/
+      - CONTEXT_PATH=/booksonic
+    networks:
+      - lsio
+    volumes:
+      - /srv/priv/services/booksonic/config:/config
+      - /srv/pub/audiobooks:/audiobooks
+#      - </path/to/podcasts>:/podcasts
+#      - </path/to/othermedia>:/othermedia
+    ports:
+      - 4041:4040
+    restart: unless-stopped
+
+networks:
+  lsio:
+    driver: bridge
+    external: true
