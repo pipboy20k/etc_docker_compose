@@ -1,0 +1,46 @@
+version: "2.1"
+services:
+  bookstack:
+    image: ghcr.io/linuxserver/bookstack
+    container_name: bookstack
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - APP_URL=https://garou.hopto.org/bookstack
+#      - APP_URL=http://10.0.0.11:4051
+#      - CONTEXT_PATH=/bookstack
+      - DB_HOST=bookstack_db
+      - DB_USER=bookstack
+      - DB_PASS=8Eg3ZdKQcVgO
+      - DB_DATABASE=bookstackapp
+    networks:
+      - lsio
+    volumes:
+      - /srv/priv/services/bookstack/bookstack_config:/config
+    ports:
+      - 4051:80
+    restart: unless-stopped
+    depends_on:
+      - bookstack_db
+  bookstack_db:
+    image: ghcr.io/linuxserver/mariadb
+    container_name: bookstack_db
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD=8Eg3ZdKQcVgO
+      - TZ=Europe/Berlin
+      - MYSQL_DATABASE=bookstackapp
+      - MYSQL_USER=bookstack
+      - MYSQL_PASSWORD=8Eg3ZdKQcVgO
+    networks:
+      - lsio
+    volumes:
+      - /srv/priv/services/bookstack/db_config:/config
+    restart: unless-stopped
+
+networks:
+  lsio:
+    driver: bridge
+    external: true
+
