@@ -1,29 +1,28 @@
+---
 version: "2.1"
 services:
   airsonic:
-    image: ghcr.io/linuxserver/airsonic
-    container_name: airsonic
+    image: lscr.io/linuxserver/airsonic-advanced
+    container_name: airsonic-advanced
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Europe/Berlin
-      - CONTEXT_PATH=/airsonic
+      - TZ=Europe/London
+      - CONTEXT_PATH=<F2>airsonic #optional
 #      - JAVA_OPTS=<options> #optional
-    networks:
-      - lsio
     volumes:
-      - /srv/priv/services/airsonic/config:/config
+      - airsonic_config:/config
       - /srv/pub/music:/music
-      - /srv/priv/services/airsonic/playlists:/playlists
-      - /srv/priv/services/airsonic/podcasts:/podcasts
+      - /srv/pub/playlists:/playlists
+#      - </path/to/podcasts>:/podcasts
 #      - </path/to/other media>:/media #optional
     ports:
       - 4040:4040
     devices:
-      - /dev/snd:/dev/snd #optional
+#      - /dev/snd:/dev/snd #optional
     restart: unless-stopped
 
-networks:
-  lsio:
-    driver: bridge
-    external: true
+  networks:
+    lsio:
+      driver: bridge
+      external: true
